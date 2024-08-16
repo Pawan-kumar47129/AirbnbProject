@@ -14,7 +14,8 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
- 
+ app.use(express.json());
+ app.use(express.urlencoded({extended:true}))
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"))  
 //index Route
@@ -29,6 +30,12 @@ app.get("/listings",async (req, res) => {
 }); 
 
 // show Route
+app.get("/listing/:id",async(req,res)=>{
+    const {id}=req.params;
+    const listing= await Listing.findById(id);
+    res.render("listings/show.ejs",{listing})
+
+})
 app.get("/", (req, res) => {
   res.send("hi i am root");
 });
