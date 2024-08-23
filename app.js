@@ -6,6 +6,7 @@ const app = express();
 const Listing = require("./models/listing.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
 const methodOveride=require("method-override");
+const ejsMate=require("ejs-mate");
 mongoose
   .connect(MONGO_URL)
   .then((res) => {
@@ -18,7 +19,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(methodOveride("_method"))
+app.engine("ejs",ejsMate);
+app.use(methodOveride("_method"));
+app.use(express.static(path.join(__dirname,"/public")));
 //index Route
 app.get("/listings", async (req, res) => {
   try {
@@ -79,5 +82,3 @@ app.listen(8080, (err) => {
   }
 });
 
-
-//listing%5Btitle%5D=My+home&listing%5Bdescription%5D=sweet+house&listing%5Bimage%5D=https%3A%2F%2Fplus.unsplash.com%2Fpremium_photo-1723492163651-c788d9a369f8%3Fq%3D80%26w%3D2072%26auto%3Dformat%26fit%3Dcrop%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%253D%253D&listing%5Bprice%5D=1200&listing%5Blocation%5D=Dehli&listing%5Bcountry%5D=India
