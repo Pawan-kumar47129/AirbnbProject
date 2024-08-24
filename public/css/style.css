@@ -2,6 +2,7 @@ body{
     background-color: pink ;
     padding: 0 !important;
     margin: 0 !important;
+    overflow-x: hidden !important;
 }
 .navbar{
     height: 3rem;
@@ -75,4 +76,11 @@ body{
     color: #222222;
     text-align: left;
     padding: 0 !important;
+}
+
+/* show listing page */
+.show-img{
+    height: 25rem !important;
+    width: 100%;
+    padding: 0;
 }

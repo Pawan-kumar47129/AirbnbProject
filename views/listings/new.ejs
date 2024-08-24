@@ -1,20 +1,78 @@
 <% layout('/layouts/boilerplate') -%>
 <body>
-    <h1>Create new Listing</h1>
+  <div class="containe row justify-content-center col-8 m-auto">
+    <h2 class="text-center" style="font-weight: 600; color: #222222">
+      Create a New Listing
+    </h2>
     <form method="POST" action="/listings">
-        <input name="listing[title]" required placeholder="Enter  title" type="text">
-        <br><br>
-        <textarea name="listing[description]" required placeholder="Enter  description" type="text"></textarea>
-        <br><br>
-        <input name="listing[image]" placeholder="Enter image url" type="text">
-        <br><br>
-        <input name="listing[price]" required placeholder="Enter  price" type="number">
-        <br><br> 
-        <input name="listing[location]"  placeholder="Enter location" type="text">
-        <br><br>
-        <input name="listing[country]" required placeholder="Enter country" type="text">
-        <br><br>
-        <button type="submit">add</button>
+      <div class="mb-2">
+        <label for="title" class="form-lable fw-semibold">Title</label>
+        <input
+          name="listing[title]"
+          required
+          placeholder="Enter a Catchy title"
+          type="text"
+          id="title"
+          class="form-control"
+        />
+      </div class="mb-2">
+      <label for="description" class="form-lable fw-semibold"
+        >Description</label
+      >
+      <textarea
+        name="listing[description]"
+        required
+        placeholder="Enter  description"
+        type="text"
+        class="form-control"
+        id="description"
+      ></textarea>
+      <div class="mb-2">
+        <label for="image" class="form-lable fw-semibold">Image</label>
+        <input
+          name="listing[image]"
+          placeholder="Enter image url"
+          type="text"
+          id="image"
+          class="form-control"
+        />
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-4">
+          <label for="price" class="form-lable fw-semibold">Price</label>
+          <input
+            name="listing[price]"
+            required
+            placeholder="1200"
+            type="number"
+            id="price"
+            class="form-control"
+          />
+        </div>
+        <div class="col-md-8">
+          <label for="location" class="form-lable fw-semibold">Location</label>
+          <input
+            name="listing[location]"
+            placeholder="Jalandhar,Punjab"
+            type="text"
+            class="form-control"
+            id="location"
+          />
+        </div>
+      </div>
+      <div class="mb-2">
+        <label for="country" class="form-lable fw-semibold">Country</label>
+        <input
+          name="listing[country]"
+          required
+          placeholder="India"
+          type="text"
+          class="form-control"
+          id="country"
+        />
+      </div>
+      <button type="submit" class="btn  btn-primary  mb-2">Add</button>
+      <br/>
     </form>
+  </div>
 </body>
-</html>
