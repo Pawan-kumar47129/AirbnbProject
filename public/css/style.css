@@ -60,16 +60,11 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 18rem !important;
+    height: 22rem !important;
 }
 .listings:hover{
-    .card-img-top{
-        background-color:white;
-        opacity: 0.7;
-    }
-    .card-body{
-        background-color: #dad7cd;
-        opacity: 0.7;
-    }
+    transform: scale(1.02);
 }
 .card-text{
     font-weight: 600;

@@ -103,7 +103,7 @@ app.all("*", (req, res, next) => {
 });
 app.use((err, req, res, next) => {
   const { status = 500, message = "Some Error Occured" } = err;
-  res.status(status).send(message);
+  res.status(status).render("error.ejs",{status,message})
 });
 app.listen(8080, (err) => {
   if (err) {

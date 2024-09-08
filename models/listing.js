@@ -24,7 +24,13 @@ const listingSchema=new Schema({
   country:{
     type:String,
     require:true,
-  }
+  },
+  reviews:[
+    {
+      type:Schema.Types.ObjectId,
+      ref:"Review",
+    }
+  ]
 
 },{timestamps:true});
 
