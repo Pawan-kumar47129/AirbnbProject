@@ -9,6 +9,7 @@ const methodOveride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const listingSchema=require("./schema.validation.js")
 const Review = require("./models/review.js");
 mongoose
   .connect(MONGO_URL)
@@ -38,17 +39,22 @@ app.get(
 app.get("/listings/new", (req, res) => {
   res.render("listings/new.ejs");
 });
-
+//listing validation
+const listingValidation=(req,res,next)=>{
+  const {error}=listingSchema.validate(req.body);
+  if(error){
+    throw new ExpressError(400,error);
+  }
+  else{
+    next();
+  }
+}
 // create route
 app.post(
   "/listings",
-  wrapAsync(async (req, res, next) => {
-    if (!req.body.listing) {
-      throw next(new ExpressError(400, "Listing Data You Not Pass"));
-    }
+  listingValidation,wrapAsync(async (req, res, next) => {
     let newListing = new Listing(req.body.listing);
     await newListing.save();
-    console.log(newListing);
     res.redirect("/listings");
   })
 );
@@ -74,7 +80,7 @@ app.get(
 //update Route
 app.put(
   "/listings/:id",
-  wrapAsync(async (req, res, next) => {
+  listingValidation,wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     if (!req.body.listing) {
       throw next(new ExpressError(400, "Listing Data You Not Pass"));
