@@ -9,6 +9,7 @@ const methodOveride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const Review = require("./models/review.js");
 mongoose
   .connect(MONGO_URL)
   .then((res) => {
@@ -42,8 +43,8 @@ app.get("/listings/new", (req, res) => {
 app.post(
   "/listings",
   wrapAsync(async (req, res, next) => {
-    if(!req.body.listing){
-      throw next(new ExpressError(400,"Listing Data You Not Pass"));
+    if (!req.body.listing) {
+      throw next(new ExpressError(400, "Listing Data You Not Pass"));
     }
     let newListing = new Listing(req.body.listing);
     await newListing.save();
@@ -75,8 +76,8 @@ app.put(
   "/listings/:id",
   wrapAsync(async (req, res, next) => {
     let { id } = req.params;
-    if(!req.body.listing){
-      throw next(new ExpressError(400,"Listing Data You Not Pass"));
+    if (!req.body.listing) {
+      throw next(new ExpressError(400, "Listing Data You Not Pass"));
     }
     await Listing.findByIdAndUpdate(id, { ...req.body.listing }); // derefrence
     res.redirect(`/listings/${id}`);
@@ -93,17 +94,29 @@ app.delete(
     res.redirect("/listings");
   })
 );
-
+//reviews
+//post route
+app.post("/listings/:id/reviews", async (req, res) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
+  console.log(listing);
+  let newReview = new Review(req.body.review);
+  listing.reviews.push(newReview);
+  await newReview.save();
+  await listing.save();
+  console.log("reviews add");
+  res.send("add");
+});
 app.get("/", (req, res) => {
   res.send("hi i am root");
 });
 // this works when above not hitting any url or route
 app.all("*", (req, res, next) => {
-  next(new ExpressError(404,"Page Not Found"));
+  next(new ExpressError(404, "Page Not Found"));
 });
 app.use((err, req, res, next) => {
   const { status = 500, message = "Some Error Occured" } = err;
-  res.status(status).render("error.ejs",{status,message})
+  res.status(status).render("error.ejs", { status, message });
 });
 app.listen(8080, (err) => {
   if (err) {
