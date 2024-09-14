@@ -25,26 +25,51 @@
         </div>
       </div>
     </div>
-    <!-- for review -->
+    <!-- for takeing review -->
     <div class="row col-sm-10 col-md-7 m-auto rounded-5">
       <h2>Leave a Comment</h2>
       <hr style="height:5px">
-      <form action="/listings/<%=listing._id%>/reviews" method="POST" 
-      style="background-color: aliceblue; border-radius: 5px;" class="pt-2 needs-validation" novalidate>
+      <form action="/listings/<%=listing._id%>/reviews" method="POST"
+        style="background-color: aliceblue; border-radius: 5px;" class="pt-2 needs-validation" novalidate>
         <div class="d-flex gap-2 align-items-center flex-column ">
           <label for="rating"><b>Rating</b></label>
-          <input type="range" min="1" max="5" id="rating" value="2" name="review[rating]"
-          style="cursor: pointer;"
-          class="form-range px-2 rounded-4>
+          <input type="range" min="1" max="5" id="rating" value="2" name="review[rating]" style="cursor: pointer;"
+            class="form-range px-2 rounded-4>
         </div>
         <div >
-          <label for="comment" class="form-label"><b>Comment</b></label>
-          <textarea name="review[comment]" id="comment" cols="30" rows="2" class="form-control" placeholder="write comments" required></textarea>
-          <div class="invalid-feedback" >please add some comments for review.</div>
+          <label for=" comment" class="form-label"><b>Comment</b></label>
+          <textarea name="review[comment]" id="comment" cols="30" rows="2" class="form-control"
+            placeholder="write comments" required></textarea>
+          <div class="invalid-feedback">please add some comments for review.</div>
         </div>
-        <div class="d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-center mb-2">
           <button class="btn btn-primary text-center mt-2">submit</button>
         </div>
       </form>
+    </div>
+    <!-- all review display -->
+    <div class="row col-sm-10 col-md-7 m-auto mt-4 mb-2 rounded-2" style="background-color: aliceblue;">
+      <h2 style="text-align: center;">All reviews</h2>
+      <div class="row justify-content-center gap-2 mb-2">
+
+        <%for(review of listing.reviews){%>
+          <div class="card col-md-5 col-sm-8 px-0">
+            <div class="card-body py-0">
+              <h5 class="card-title">Joe Deo</h5>
+              <p class="card-text">
+                <%= review.comment %>.
+              </p>
+              <p class="card-text mt-0">
+                <%= review.rating %> stars
+              </p>
+            </div>
+            <div class="d-flex justify-content-center mb-2">
+              <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
+                <button class="btn btn-dark">Delete</button>
+              </form>
+            </div>
+          </div>
+          <%}%>
+      </div>
     </div>
   </body>

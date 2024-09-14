@@ -1,5 +1,5 @@
 const joi=require("joi");
-const listingSchema=joi.object({
+module.exports.listingSchema=joi.object({
     listing:joi.object({
         title:joi.string().required(),
         description:joi.string().required(),
@@ -9,4 +9,9 @@ const listingSchema=joi.object({
         image:joi.string().allow("",null)
     }).required()
 });
-module.exports=listingSchema;
+module.exports.reviewSchema=joi.object({
+    review:joi.object({
+        comment:joi.string().required(),
+        rating:joi.number().required().min(1).max(5),
+    }).required(),
+}).required();

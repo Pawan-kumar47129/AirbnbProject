@@ -9,7 +9,7 @@ const methodOveride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const listingSchema=require("./schema.validation.js")
+const { listingSchema, reviewSchema } = require("./schema.validation.js");
 const Review = require("./models/review.js");
 mongoose
   .connect(MONGO_URL)
@@ -40,19 +40,19 @@ app.get("/listings/new", (req, res) => {
   res.render("listings/new.ejs");
 });
 //listing validation
-const listingValidation=(req,res,next)=>{
-  const {error}=listingSchema.validate(req.body);
-  if(error){
-    throw new ExpressError(400,error);
-  }
-  else{
+const listingValidation = (req, res, next) => {
+  const { error } = listingSchema.validate(req.body);
+  if (error) {
+    throw new ExpressError(400, error);
+  } else {
     next();
   }
-}
+};
 // create route
 app.post(
   "/listings",
-  listingValidation,wrapAsync(async (req, res, next) => {
+  listingValidation,
+  wrapAsync(async (req, res, next) => {
     let newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -63,7 +63,7 @@ app.get(
   "/listings/:id",
   wrapAsync(async (req, res, next) => {
     let id = req.params.id;
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs", { listing });
   })
 );
@@ -80,7 +80,8 @@ app.get(
 //update Route
 app.put(
   "/listings/:id",
-  listingValidation,wrapAsync(async (req, res, next) => {
+  listingValidation,
+  wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     if (!req.body.listing) {
       throw next(new ExpressError(400, "Listing Data You Not Pass"));
@@ -101,18 +102,41 @@ app.delete(
   })
 );
 //reviews
-//post route
-app.post("/listings/:id/reviews", async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findById(id);
-  console.log(listing);
-  let newReview = new Review(req.body.review);
-  listing.reviews.push(newReview);
-  await newReview.save();
-  await listing.save();
-  console.log("reviews add");
-  res.send("add");
-});
+const reviewValidation = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    throw new ExpressError(400, error);
+  } else {
+    next();
+  }
+};
+//post review route
+app.post(
+  "/listings/:id/reviews",
+  reviewValidation,
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let listing = await Listing.findById(id);
+    console.log(listing);
+    let newReview = new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    console.log("reviews add");
+    res.redirect(`/listings/${listing._id}`);
+  })
+);
+
+//delete review route
+app.delete(
+  "/listings/:id/reviews/:reviewId",
+  wrapAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });// pull delete the matching data from reviews array
+    await Review.findByIdAndDelete(id);
+    res.redirect(`/listings/${id}`);
+  })
+);
 app.get("/", (req, res) => {
   res.send("hi i am root");
 });
