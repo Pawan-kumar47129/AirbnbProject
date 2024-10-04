@@ -33,6 +33,7 @@ router.get(
     wrapAsync(async (req, res, next) => {
       let newListing = new Listing(req.body.listing);
       await newListing.save();
+      req.flash("success","Listing created successfully!");
       res.redirect("/listings");
     })
   );
@@ -65,6 +66,7 @@ router.get(
         throw next(new ExpressError(400, "Listing Data You Not Pass"));
       }
       await Listing.findByIdAndUpdate(id, { ...req.body.listing }); // derefrence
+      req.flash("success","Listing update successfully!");
       res.redirect(`/listings/${id}`);
     })
   );
@@ -76,6 +78,7 @@ router.get(
       let { id } = req.params;
       let deletingdata = await Listing.findByIdAndDelete(id);
       console.log(deletingdata);
+      req.flash("success","Listing deleted successfully!");
       res.redirect("/listings");
     })
   );
