@@ -1,0 +1,26 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <body >
+        <div class="containe row justify-content-center align-items-center col-9 col-sm-4 col-md-3 mx-auto my-sm-4 border " style="height:23rem; border-radius: 1.5rem 0 1.5rem 0; background-color: #dad7cd; margin-bottom: 2rem;">
+
+            <form method="POST" action="/login" class="needs-validation d-flex w-100 p-2 flex-column align-items-center"
+                novalidate>
+                <h2 class="text-center mb-4" style="font-weight: 600; color: #222222">
+                    Login
+                </h2>
+                <div class="mb-2">
+                    <label for="username" class="form-lable fw-semibold">username</label>
+                    <input name="username" required type="text" id="username" class="form-control" />
+                    <div class="invalid-feedback">choose valid username.</div>
+                </div>
+                <div class="mb-2">
+                    <label for="password" class="form-lable fw-semibold">password</label>
+                    <input name="password" required type="password" id="password" class="form-control" />
+                    <div class="invalid-feedback">choose valid valid password.</div>
+                </div>
+                <button type="submit" class="btn btn-primary my-2">login</button>
+                <a href="/signup">new to click here</a>
+                <br />
+            </form>
+        </div>
+    </body>
