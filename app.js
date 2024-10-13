@@ -15,6 +15,7 @@ const userRouter=require("./routes/user.route.js");
 const passport=require("passport");
 const localStrategy=require("passport-local");
 const User=require("./models/user.model.js");
+const cookieParser=require('cookie-parser');
 mongoose
   .connect(MONGO_URL)
   .then((res) => {
@@ -43,6 +44,7 @@ const sessionOption={
     httpOnly:true,
   }
 }
+app.use(cookieParser("good"));
 app.use(session(sessionOption));
 app.use(flash());
 
@@ -55,6 +57,7 @@ passport.deserializeUser(User.deserializeUser());
 // middleware if any flash present then store in responeLocals object 
 app.use((req,res,next)=>{
   // console.log(req.session);// this tells what is store in session
+  res.locals.user=req.user;
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
   next();
