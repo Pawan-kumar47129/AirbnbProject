@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const {data} =require("./data.js");
-const Listing=require("../models/listing.js");
+const Listing=require("../models/listing.model.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
 
 mongoose
@@ -15,7 +15,12 @@ mongoose
   async function initDataBase(){
     try{
     await Listing.deleteMany({});
-    const res=await Listing.insertMany(data);
+    const initData=data.map((listing)=>{
+      listing.owner='6706bef05ee56da42886bbc4'
+      return listing;
+    }
+    )
+    const res=await Listing.insertMany(initData);
     console.log("data was initialize");
     console.log(res);
     }

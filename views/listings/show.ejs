@@ -8,6 +8,9 @@
       <img class="show-img rounded-4" src="<%=listing.image%>" class="card-img-top" alt="listing_image" />
       <div class="card-body">
         <p class="card-text">
+          owned by:<%=listing.owner.username%>
+        </p>
+        <p class="card-text">
           <%=listing.description%>
         </p>
         <p class="card-text">&#8377;<%=listing.price.toLocaleString("en-IN")%></p>
@@ -17,16 +20,19 @@
         <p class="card-text">
           <%=listing.country%>
         </p>
-        <div class="d-flex justify-content-center gap-4">
-          <a href="/listings/<%=listing._id%>/edit" class="btn btn-secondary">Edit</a>
-          <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-            <button class="btn btn-danger">Delete</button>
-          </form>
-        </div>
+        <% if(user && user._id.equals(listing.owner._id)){%>
+          <div class="d-flex justify-content-center gap-4">
+            <a href="/listings/<%=listing._id%>/edit" class="btn btn-secondary">Edit</a>
+            <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        <%}%>
       </div>
     </div>
     <!-- for takeing review -->
     <div class="row col-sm-10 col-md-7 m-auto rounded-5">
+      <% if(user){%>
       <h2>Leave a Comment</h2>
       <hr style="height:5px">
       <form action="/listings/<%=listing._id%>/reviews" method="POST"
@@ -46,28 +52,30 @@
           <button class="btn btn-primary text-center mt-2">submit</button>
         </div>
       </form>
+      <%}%>
     </div>
     <!-- all review display -->
     <div class="row col-sm-10 col-md-7 m-auto mt-4 mb-2 rounded-2" style="background-color: aliceblue;">
-      <h2 style="text-align: center;">All reviews</h2>
+      <h3 style="text-align: center;">All Reviews</h3>
       <div class="row justify-content-center gap-2 mb-2">
 
         <%for(review of listing.reviews){%>
           <div class="card col-md-5 col-sm-8 px-0">
             <div class="card-body py-0">
-              <h5 class="card-title">Joe Deo</h5>
+              <h5 class="card-title">@<span class="text-decoration-underline"><%= review.author.username%></span></h5>
               <p class="card-text">
                 <%= review.comment %>.
               </p>
-              <p class="card-text mt-0">
+              <p class="card-text mt-0 ">
                 <%= review.rating %> stars
               </p>
             </div>
-            <div class="d-flex justify-content-center mb-2">
+            <div class="d-flex justify-content-center mb-2 align-items-center" >
               <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
                 <button class="btn btn-dark">Delete</button>
               </form>
             </div>
+         
           </div>
           <%}%>
       </div>

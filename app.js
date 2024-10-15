@@ -57,11 +57,12 @@ passport.deserializeUser(User.deserializeUser());
 // middleware if any flash present then store in responeLocals object 
 app.use((req,res,next)=>{
   // console.log(req.session);// this tells what is store in session
-  res.locals.user=req.user;
+  res.locals.user=req.user;//currUser who are login so that we access in ejs file
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
   next();
 })
+/*
 app.get("/demouser",async(req,res)=>{
   const fakeUser={
     username:"pawank47129",
@@ -69,7 +70,7 @@ app.get("/demouser",async(req,res)=>{
   }
   const registorUser=await User.register(fakeUser,"helloWorld");
   res.send(registorUser);
-})
+})*/
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter)// here we have listing id as params but when it go to reviewRouter or childRouter then id params not goes but if we want to go parent params id to child router so we use in Router function inside we pass a option {mergeParams:true} this is written in route files check 
