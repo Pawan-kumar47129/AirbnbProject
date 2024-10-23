@@ -1,6 +1,8 @@
+if(process.env.NODE_ENV!="production"){
+  require("dotenv").config()
+}
 const express = require("express");
 const mongoose = require("mongoose");
-const ejs = require("ejs");
 const path = require("path");
 const app = express();
 const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";

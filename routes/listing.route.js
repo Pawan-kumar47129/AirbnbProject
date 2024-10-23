@@ -3,7 +3,7 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const listingController = require("../controller/listing.controller.js");
 const { isLoggedIn, listingValidation, isOwner } = require("../middleware.js");
-
+const upload=require("../middleware/multer.middleware.js")
 //index Route
 router.get("/", wrapAsync(listingController.index));
 
@@ -13,7 +13,7 @@ router.get("/new", isLoggedIn, listingController.renderNewForm);
 // create route
 router.post(
   "/",
-  [isLoggedIn, listingValidation],
+  [isLoggedIn, upload.single("listing[image]"),listingValidation],
   wrapAsync(listingController.createListing)
 );
 
@@ -30,7 +30,7 @@ router.get(
 //update Route
 router.put(
   "/:id",
-  [isLoggedIn, isOwner, listingValidation],
+  [isLoggedIn, isOwner,upload.single("listing[image]"),listingValidation],
   wrapAsync(listingController.updateListing)
 );
 

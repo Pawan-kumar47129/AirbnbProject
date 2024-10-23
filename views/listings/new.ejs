@@ -5,7 +5,7 @@
     <h2 class="text-center" style="font-weight: 600; color: #222222">
       Create a New Listing
     </h2>
-    <form method="POST" action="/listings" class="needs-validation" novalidate>
+    <form method="POST" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
       <div class="mb-2">
         <label for="title" class="form-lable fw-semibold">Title</label>
         <input
@@ -33,14 +33,15 @@
         <div class="invalid-feedback">Please choose a description.</div>
       </div>
       <div class="mb-2">
-        <label for="image" class="form-lable fw-semibold">Image</label>
+        <label for="image" class="form-lable-file fw-semibold">Upload Image</label>
         <input
           name="listing[image]"
-          placeholder="Enter image url"
-          type="text"
+          type="file"
+          required
           id="image"
           class="form-control"
         />
+        <div class="invalid-feedback">Please upload listing image</div>
       </div>
       <div class="row mb-2">
         <div class="col-md-4">
@@ -48,6 +49,7 @@
           <input
             name="listing[price]"
             required
+            min="0"
             placeholder="1200"
             type="number"
             id="price"

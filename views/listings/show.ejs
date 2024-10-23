@@ -5,7 +5,7 @@
       <%=listing.title%>
     </h2>
     <div class="card row col-sm-10 col-md-7 m-auto rounded-4 mb-2">
-      <img class="show-img rounded-4" src="<%=listing.image%>" class="card-img-top" alt="listing_image" />
+      <img class="show-img rounded-4" src="<%=listing.image.url%>" class="card-img-top" alt="listing_image" />
       <div class="card-body">
         <p class="card-text">
           owned by:<%=listing.owner.username%>
@@ -27,32 +27,50 @@
               <button class="btn btn-danger">Delete</button>
             </form>
           </div>
-        <%}%>
+          <%}%>
       </div>
     </div>
     <!-- for takeing review -->
     <div class="row col-sm-10 col-md-7 m-auto rounded-5">
       <% if(user){%>
-      <h2>Leave a Comment</h2>
-      <hr style="height:5px">
-      <form action="/listings/<%=listing._id%>/reviews" method="POST"
-        style="background-color: aliceblue; border-radius: 5px;" class="pt-2 needs-validation" novalidate>
-        <div class="d-flex gap-2 align-items-center flex-column ">
-          <label for="rating"><b>Rating</b></label>
-          <input type="range" min="1" max="5" id="rating" value="2" name="review[rating]" style="cursor: pointer;"
-            class="form-range px-2 rounded-4>
-        </div>
-        <div >
-          <label for=" comment" class="form-label"><b>Comment</b></label>
-          <textarea name="review[comment]" id="comment" cols="30" rows="2" class="form-control"
-            placeholder="write comments" required></textarea>
-          <div class="invalid-feedback">please add some comments for review.</div>
-        </div>
-        <div class="d-flex justify-content-center align-items-center mb-2">
-          <button class="btn btn-primary text-center mt-2">submit</button>
-        </div>
-      </form>
-      <%}%>
+        <h2>Leave a Comment</h2>
+        <form action="/listings/<%=listing._id%>/reviews" method="POST"
+          style="background-color: aliceblue; border-radius: 5px;" class="pt-2 needs-validation" novalidate>
+          <div class="d-flex flex-column ">
+            <p><b>Rating</b></p>
+            <fieldset class="starability-basic">
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                aria-label="1 star." />
+
+              <input type="radio" id="rate1" name="review[rating]" value="1" />
+              <label for="rate1">1 star.</label>
+
+              <input type="radio" id="rate2" name="review[rating]" value="2" />
+              <label for="rate2">2 stars.</label>
+
+              <input type="radio" id="rate3" name="review[rating]" value="3" />
+              <label for="rate3">3 stars.</label>
+
+              <input type="radio" id="rate4" name="review[rating]" value="4" />
+              <label for="rate4">4 stars.</label>
+
+              <input type="radio" id="rate5" name="review[rating]" value="5" />
+              <label for="rate5">5 stars.</label>
+
+              <span class="starability-focus-ring"></span>
+            </fieldset>
+          </div>
+
+          <div>
+            <textarea name="review[comment]" id="comment" cols="30" rows="1" class="form-control"
+              placeholder="write comments" required></textarea>
+            <div class="invalid-feedback">please add some comments for review.</div>
+          </div>
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary text-center mt-2">submit</button>
+          </div>
+        </form>
+        <%}%>
     </div>
     <!-- all review display -->
     <div class="row col-sm-10 col-md-7 m-auto mt-4 mb-2 rounded-2" style="background-color: aliceblue;">
@@ -62,20 +80,21 @@
         <%for(review of listing.reviews){%>
           <div class="card col-md-5 col-sm-8 px-0">
             <div class="card-body py-0">
-              <h5 class="card-title">@<span class="text-decoration-underline"><%= review.author.username%></span></h5>
+              <h5 class="card-title">@<span class="text-decoration-underline">
+                  <%= review.author.username%>
+                </span></h5>
+              <p class="starability-result card-text" data-rating="<%= review.rating %>">
+              </p>
               <p class="card-text">
                 <%= review.comment %>.
               </p>
-              <p class="card-text mt-0 ">
-                <%= review.rating %> stars
-              </p>
             </div>
-            <div class="d-flex justify-content-center mb-2 align-items-center" >
+            <div class="d-flex justify-content-center mb-2 align-items-center">
               <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
                 <button class="btn btn-dark">Delete</button>
               </form>
             </div>
-         
+
           </div>
           <%}%>
       </div>

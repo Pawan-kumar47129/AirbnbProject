@@ -6,6 +6,7 @@ const {
 } = require("./schema.validation.js");
 const wrapAsync = require("./utils/wrapAsync.js");
 const Review = require("./models/review.model.js");
+const fs=require("fs");
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl; // suppose user want create or edit or .. so hit that url but user not login so we store that url so that when user login then we redirect that url after login
@@ -47,7 +48,13 @@ module.exports.isReviewAuthor= wrapAsync(async (req, res, next) => {
 //listing schema validation
 module.exports.listingValidation = (req, res, next) => {
   const { error } = listingSchemaValidation.validate(req.body);
+  
   if (error) {
+    if(req.file){// this check that if user image upload but another field have error then we remove that file from server 
+      fs.unlink(req.file.path,(err)=>{if(err) console.log(err.message)});
+    }
+    // req.flash("error",error.message);
+    // res.render(req.originalUrl);
     throw new ExpressError(400, error);
   } else {
     next();

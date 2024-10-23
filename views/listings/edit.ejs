@@ -5,7 +5,7 @@
       Edit Your Listing
     </h2>
     <form method="POST" action="/listings/<%=listing._id%>?_method=PUT"
-      class="needs-validation" novalidate
+      class="needs-validation" novalidate enctype="multipart/form-data"
       >
       <div class="mb-2">
         <label for="title" class="form-lable fw-semibold">Title</label>
@@ -28,26 +28,24 @@
         <textarea
           name="listing[description]"
           type="text"
-          class="form-control "
+          class="form-control"
           id="description"
-          rows="4"
+          rows="3"
           required
         >
-        <%=listing.description%>
+        <%= listing.description %>
         </textarea>
         <div class="invalid-feedback">
           Please choose a description.
         </div>
       </div>
       <div class="mb-2">
-        <label for="image" class="form-lable fw-semibold">Image</label>
+        <label for="image" class="form-lable-file fw-semibold">Upload new Image if want Change the Image</label>
         <input
           name="listing[image]"
-          value="<%=listing.image%>"
-          type="text"
+          type="file"
           id="image"
           class="form-control"
-          required
         />
         <div class="invalid-feedback">
           Please choose a image url.
@@ -58,7 +56,7 @@
           <label for="price" class="form-lable fw-semibold">Price</label>
           <input
             name="listing[price]"
-            value="<%=listing.price%>"
+            value="<%= listing.price %>"
             type="number"
             id="price"
             class="form-control"
@@ -72,7 +70,7 @@
           <label for="location" class="form-lable fw-semibold">Location</label>
           <input
             name="listing[location]"
-            value="<%=listing.location%>"
+            value="<%= listing.location %>"
             type="text"
             class="form-control"
             id="location"
@@ -87,7 +85,7 @@
         <label for="country" class="form-lable fw-semibold">Country</label>
         <input
           name="listing[country]"
-          value="<%=listing.country%>"
+          value="<%= listing.country %>"
           type="text"
           class="form-control"
           id="country"
