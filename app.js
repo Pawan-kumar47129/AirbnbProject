@@ -35,10 +35,9 @@ app.use(methodOveride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 app.get("/", (req, res) => {
   return res.redirect('/listings')
-  res.send("hi i am root");
 });
 const sessionOption={
-  secret:"supersecretkey",
+  secret:process.env.SECRET_KEY,
   resave:false,
   saveUninitialized:true,
   cookie:{
@@ -47,7 +46,7 @@ const sessionOption={
     httpOnly:true,
   }
 }
-app.use(cookieParser("good"));
+app.use(cookieParser(process.env.SECRET_KEY));
 app.use(session(sessionOption));
 app.use(flash());
 
