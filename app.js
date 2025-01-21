@@ -5,7 +5,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
-const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
 const methodOveride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session= require("express-session");
@@ -19,7 +18,7 @@ const localStrategy=require("passport-local");
 const User=require("./models/user.model.js");
 const cookieParser=require('cookie-parser');
 mongoose
-  .connect(MONGO_URL)
+  .connect(process.env.MONGODB_URI)
   .then((res) => {
     console.log("data base connected seccussfully");
   })
@@ -87,10 +86,11 @@ app.use((err, req, res, next) => {
   const { status = 500, message = "Some Error Occured" } = err;
   res.status(status).render("error.ejs", { status, message });
 });
+let PORT=process.env.PORT || 8000
 app.listen(8080, (err) => {
   if (err) {
     console.Log(err);
   } else {
-    console.log(`server start at 8080 port number`);
+    console.log(`server start at ${PORT} port number`);
   }
 });
