@@ -14,7 +14,7 @@ module.exports.signup = async (req, res, next) => {
       if (err) {
         next(err);
       } else {
-        req.flash("success", "wecome to int airbnb");
+        req.flash("success", "wecome to in airbnb");
         res.redirect("/listings");
       }
     });

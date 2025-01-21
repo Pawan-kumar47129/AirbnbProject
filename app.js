@@ -34,6 +34,7 @@ app.engine("ejs", ejsMate);
 app.use(methodOveride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 app.get("/", (req, res) => {
+  return res.redirect('/listings')
   res.send("hi i am root");
 });
 const sessionOption={
